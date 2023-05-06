@@ -75,7 +75,7 @@ class Main {
   }
 
   stop() {
-    // this.isPlaying = false
+    this.isPlaying = false
     this.sample.pause()
   }
 
@@ -85,29 +85,73 @@ class Main {
     console.log(this.dataArray)
     const { width, height } = this.canvas
     this.canvasCtx.clearRect(0, 0, width, height)
-    for (let i = 0, length = this.dataArray.length; i < length; i++) {
+    const slideWidth = (width * 0.5) / this.bufferLength
+    // xスタート位置
+    let x = width / 2
+    let _x = width / 2
+    this.canvasCtx.beginPath()
+    for (let i = 0; i < this.bufferLength; i++) {
       const d = this.dataArray[i]
-      this.canvasCtx.beginPath()
-      this.canvasCtx.moveTo(
-        i * ((width * 0.5) / length) + (length / 2) * (width / length),
-        height / 2 - (d / 255) * (height * 0.45)
-      )
-      this.canvasCtx.lineTo(
-        i * ((width * 0.5) / length) + (length / 2) * (width / length),
-        height / 2 + (d / 255) * (height * 0.45)
-      )
+      const v = d / 300
+      // const y = height / 2 + v * (height / 2)
+      // const _y = height / 2 - v * (height / 2)
+      let y = 0
+      if (i % 2 === 0 && v !== 0) {
+        y = height / 2 - v * (height / 2)
+      } else {
+        y = height / 2 + v * (height / 2)
+      }
 
-      // 左右反転
-      this.canvasCtx.moveTo(
-        -i * ((width * 0.5) / length) + (length / 2) * (width / length),
-        height / 2 - (d / 255) * (height * 0.45)
-      )
-      this.canvasCtx.lineTo(
-        -i * ((width * 0.5) / length) + (length / 2) * (width / length),
-        height / 2 + (d / 255) * (height * 0.45)
-      )
-      this.canvasCtx.stroke()
+      if (i === 0) {
+        this.canvasCtx.moveTo(x, y)
+      } else {
+        this.canvasCtx.lineTo(x, y)
+      }
+      x += slideWidth
+      // _x -= slideWidth
     }
+
+    for (let i = 0; i < this.bufferLength; i++) {
+      const d = this.dataArray[i]
+      const v = d / 300
+      let y = 0
+      if (i % 2 === 0 && v !== 0) {
+        y = height / 2 - v * (height / 2)
+      } else {
+        y = height / 2 + v * (height / 2)
+      }
+      // const y = height / 2 + v * (height / 2)
+      // const _y = height / 2 - v * (height / 2)
+
+      if (i === 0) {
+        this.canvasCtx.moveTo(_x, y)
+      } else {
+        this.canvasCtx.lineTo(_x, y)
+      }
+      // x += slideWidth
+      _x -= slideWidth
+    }
+
+    this.canvasCtx.stroke()
+
+    // this.canvasCtx.moveTo(
+    //   i * ((width * 0.5) / length) + (length / 2) * (width / length),
+    //   height / 2 - (d / 255) * (height * 0.45)
+    // )
+    // this.canvasCtx.lineTo(
+    //   i * ((width * 0.5) / length) + (length / 2) * (width / length),
+    //   height / 2 + (d / 255) * (height * 0.45)
+    // )
+
+    // // 左右反転
+    // this.canvasCtx.moveTo(
+    //   -i * ((width * 0.5) / length) + (length / 2) * (width / length),
+    //   height / 2 - (d / 255) * (height * 0.45)
+    // )
+    // this.canvasCtx.lineTo(
+    //   -i * ((width * 0.5) / length) + (length / 2) * (width / length),
+    //   height / 2 + (d / 255) * (height * 0.45)
+    // )
   }
 }
 
