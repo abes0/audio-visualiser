@@ -1,4 +1,3 @@
-import Oc from "@Components/Oc"
 class Sound2 {
   constructor() {
     console.log("sound2")

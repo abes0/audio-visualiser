@@ -26,7 +26,7 @@ export default defineConfig(({ command }) => {
       },
       resolve: {
         alias: {
-          "@Components/": path.join(__dirname, "src/Components"),
+          "@Components/": path.join(__dirname, "src/Components/"),
           "~/": path.join(__dirname, "src/"),
         },
       },
